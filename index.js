@@ -20,3 +20,22 @@ const db = mysql.createConnection({
   database: 'mahasiswa',
   port    : 3306        
 });
+
+db.connect((err) => {
+  if (err) {
+    console.error('Error connecting to the database:', err);
+    return;
+  }
+  console.log('Koneksi berhasil');
+});
+
+app.get('/api/mahasiswa', (req, res) => {
+    db.query('SELECT * from biodata', (err, results) => {
+        if (err) {
+            console.error('Error executing query:' + err.stack);
+            res.status(500).send('Error fetching users');
+            return;
+        }
+        res.json(results);
+    });
+});
